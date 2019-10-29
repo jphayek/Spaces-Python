@@ -9,3 +9,6 @@ def test_base(tmpdir):
     fix_names(tmpdir)
     assert (tmpdir / "hello_world.txt").exists()
     assert not (tmpdir / "hello world.txt").exists()
+
+def test_recurse(tmpdir):
+    assert True
