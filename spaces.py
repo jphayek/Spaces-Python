@@ -1,7 +1,10 @@
 "Prend en parametre un dossier et remplace dans ce dossier tous les noms des fichiers contenant des espace en underscore."
 import argparse
 from pathlib import Path
+
 __version__ = "0.0.1"
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Searches and replaces in filenames.")
     parser.add_argument("path", help="Root directory in which to search for files.")
@@ -18,16 +21,20 @@ def parse_args():
     return parser.parse_args()
 
 
-def main():
-    args = parse_args()
+def fix_names(path, search=" ", replace="_", recurse=False):
     files = [
         file
-        for file in Path(args.path).glob("*" if not args.recurse else "**/*")
+        for file in Path(path).glob("*" if not recurse else "**/*")
         if file.is_file()
     ]
     for file in files:
-        new_name = file.name.replace(args.search, args.replace)
+        new_name = file.name.replace(search, replace)
         file.rename(file.parent / new_name)
+
+
+def main():
+    args = parse_args()
+    fix_names(args.path, args.search, args.replace, args.recurse)
 
 
 if __name__ == "__main__":
